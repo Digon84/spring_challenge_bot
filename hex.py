@@ -52,6 +52,9 @@ class Action:
         else:
             return f'{self.type.name} {self.target_cell_id}'
 
+    def __eq__(self, other):
+        return self.__str__() == other.__str__()
+
     @staticmethod
     def parse(action_string):
         split = action_string.split(' ')
