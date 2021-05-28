@@ -1,6 +1,6 @@
 import pytest
 from hex import Cell, Board, Coor
-from hex_test_data import POSSIBLE_MOVE_CANDITATES_TEST_DATA, POSSIBLE_MOVES_TEST_DATA
+from hex_test_data import POSSIBLE_MOVE_CANDITATES_TEST_DATA, POSSIBLE_ACTIONS_TEST_DATA
 
 
 @pytest.mark.parametrize("radius, start_cell, expected_result", POSSIBLE_MOVE_CANDITATES_TEST_DATA)
@@ -12,7 +12,7 @@ def test_possible_moves_coordinates(radius, start_cell, expected_result):
 
 
 @pytest.mark.parametrize("board_radius, cell_index, cell_coordinates, cell_richness, cell_neighbors, tree,"
-                         "expected_result", POSSIBLE_MOVES_TEST_DATA)
+                         "expected_result", POSSIBLE_ACTIONS_TEST_DATA)
 def test_possible_actions(board_radius, cell_index, cell_coordinates, cell_richness, cell_neighbors, tree,
                           expected_result):
     board = Board(radius=board_radius)
