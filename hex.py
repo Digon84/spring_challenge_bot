@@ -156,20 +156,3 @@ class Board:
 
     def create_board(self):
         pass
-
-
-b = Board(3)
-c = Cell(35, Coor(1, -3, 2), 1, 1, b.get_move_coordinates(Coor(1, -3, 2)))
-print(c)
-c.tree = Tree(35, 1, True, False)
-print(c)
-print(*[possible_action for possible_action in c.possible_actions])
-
-
-# a = Coor(1, -2, 1)
-# c = Coor(-2, -2, 4)
-# print(c.calculate_distance(a))
-# print(b.index_to_coordinates[7])
-# print(b.coordinates_to_index[Coor(-1, -2, 3)])
-#
-# print(*b.get_move_coordinates(Coor(-3, 3, 0)))
