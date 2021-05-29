@@ -7,7 +7,6 @@ from hex_test_data import POSSIBLE_MOVE_CANDITATES_TEST_DATA, POSSIBLE_ACTIONS_T
 def test_possible_moves_coordinates(radius, start_cell, expected_result):
     board = Board(radius=radius)
     possible_move_coordinates = board.get_move_coordinates(start_cell)
-    print(len(possible_move_coordinates))
     assert set(possible_move_coordinates) == expected_result
 
 
@@ -19,4 +18,4 @@ def test_possible_actions(board_radius, cell_index, cell_coordinates, cell_richn
     # def __init__(self, cell_index, coor, richness, neighbors, possible_moves, tree=None):
     cell = Cell(cell_index=cell_index, coor=cell_coordinates, richness=cell_richness, neighbors=cell_neighbors,
                 possible_moves=board.get_move_coordinates(cell_coordinates), tree=tree)
-    assert cell.possible_actions == expected_result
+    assert set(cell.possible_actions) == expected_result

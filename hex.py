@@ -55,6 +55,9 @@ class Action:
     def __eq__(self, other):
         return self.__str__() == other.__str__()
 
+    def __hash__(self):
+        return hash(self.__str__())
+
     @staticmethod
     def parse(action_string):
         split = action_string.split(' ')
@@ -84,8 +87,8 @@ class Cell:
         self.neighbors = neighbors
         self.possible_actions = None
         self.radius = -1
-        self.tree = tree
         self.possible_moves = possible_moves
+        self.tree = tree
         self.possible_actions = self.get_possible_actions()
 
     def __str__(self):
@@ -108,19 +111,24 @@ class Cell:
             self.possible_actions = self.get_possible_actions()
 
     def get_possible_actions(self):
-        possible_actions = []
+        possible_actions = [Action(ActionType.WAIT)]
         if self.radius == -1:
+            pass
+        elif self.tree.is_dormant:
+            pass
+        elif not self.tree.is_mine:
             pass
         elif self.radius == 0:
             possible_actions.append(Action(ActionType.GROW, self.cell_index))
         else:
             if self.radius == 3:
                 possible_actions.append(Action(ActionType.COMPLETE, self.cell_index))
+            else:
+                possible_actions.append(Action(ActionType.GROW, self.cell_index))
             for possible_move in self.possible_moves:
                 temp = self.coor.calculate_distance(possible_move)
                 if temp.x <= self.radius and temp.y <= self.radius and temp.z <= self.radius and \
                         Board.COORDINATES_TO_INDEX[possible_move] != self.cell_index:
-                    print(f"possible_action to: {possible_move}")
                     possible_actions.append(Action(ActionType.SEED, Board.COORDINATES_TO_INDEX[possible_move],
                                                    self.cell_index))
         return possible_actions
