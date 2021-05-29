@@ -89,7 +89,8 @@ class Cell:
         self.radius = -1
         self.possible_moves = possible_moves
         self.tree = tree
-        self.possible_actions = self.get_possible_actions()
+        if tree is None:
+            self.possible_actions = self.get_possible_actions()
 
     def __str__(self):
         return f'cell_index: {self.cell_index}\n \
