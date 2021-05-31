@@ -163,5 +163,8 @@ class Board:
                                      [str(key) for key in self.COORDINATES_TO_INDEX.keys()]])
         return move_coordinates
 
+    def is_cell_shadowed(self, cell_to_check, sun_direction):
+        pass
+
     def create_board(self):
         pass

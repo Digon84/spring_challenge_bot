@@ -1,4 +1,4 @@
-from hex import Coor, Tree, ActionType, Action
+from hex import Coor, Tree, ActionType, Action, Cell
 
 # radius, start_cell, expected_result
 POSSIBLE_MOVE_CANDITATES_TEST_DATA = [
@@ -57,4 +57,14 @@ POSSIBLE_ACTIONS_TEST_DATA = [
      {Action(ActionType.WAIT)}),
     (3, 0, Coor(0, 0, 0), 0, [], Tree(cell_index=0, size=3, is_mine=True, is_dormant=True),
      {Action(ActionType.WAIT)}),
+]
+
+# cell_to_check, sun_direction, expected_result
+FIND_SHADOW_TEST_DATA = [
+    (0, 3, True),   # size 3 (cell 7) shadows size 2 (cell 0)
+    (4, 3, True),   # size 2 (cell 0) doesn't shadow 3 (cell 4), but 3 (cell 7) does - border
+    (7, 0, True),   # size 3 (cell 4) shadows size 3 (cell 7) - border
+    (11, 2, True),  # size 2 (cell 0) shadows size 2 (cell 11) - border
+    (9, 0, False),  # size 2 (cell 11) does not shadow size 3 (cell 9), even if it reaches the cell
+    (34, 4, False)  # size 1 (cell 36) does not shadow size 1 (cell 34) - no reach
 ]
