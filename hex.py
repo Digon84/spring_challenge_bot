@@ -157,14 +157,24 @@ class Board:
 
     def get_move_coordinates(self, origin_cell_coor):
         move_coordinates = [origin_cell_coor]
-        for i in range(1, self.radius+1):
-            move_coordinates.extend([origin_cell_coor + mc*i for mc in self.DIRECTIONS
-                                     if str(origin_cell_coor + mc*i) in
+        for i in range(1, self.radius + 1):
+            move_coordinates.extend([origin_cell_coor + mc * i for mc in self.DIRECTIONS
+                                     if str(origin_cell_coor + mc * i) in
                                      [str(key) for key in self.COORDINATES_TO_INDEX.keys()]])
         return move_coordinates
 
     def is_cell_shadowed(self, cell_to_check, sun_direction):
-        pass
+        opposite_direction = {0: 3, 1: 4, 2: 5, 3: 0, 4: 1, 5: 2}[sun_direction]
+        cell_tree_size = self.board[cell_to_check].tree.size
+        cell_coor = self.board[cell_to_check].coor
+        for distance in range(1, 4):
+            possible_shadowing = self.COORDINATES_TO_INDEX[cell_coor + self.DIRECTIONS[opposite_direction] * distance]
+            cell = self.board.get(possible_shadowing, None)
+            if cell:
+                if self.board[possible_shadowing].tree.size >= distance and \
+                        self.board[possible_shadowing].tree.size >= cell_tree_size:
+                    return True
+        return False
 
     def create_board(self):
         pass
