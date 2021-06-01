@@ -68,3 +68,17 @@ FIND_SHADOW_TEST_DATA = [
     (9, 0, False),  # size 2 (cell 11) does not shadow size 3 (cell 9), even if it reaches the cell
     (34, 4, False)  # size 1 (cell 36) does not shadow size 1 (cell 34) - no reach
 ]
+
+# tree, expected_player_cells, expected_growing_seeding_cost
+PLACE_TREE_PLAYER = [
+    (Tree(cell_index=4, size=0, is_mine=True, is_dormant=False), [4], {0: 1, 1: 1, 2: 3, 3: 7}),
+    (Tree(cell_index=9, size=3, is_mine=True, is_dormant=False), [9], {0: 0, 1: 1, 2: 3, 3: 8}),
+    (Tree(cell_index=34, size=1, is_mine=True, is_dormant=False), [34], {0: 0, 1: 2, 2: 3, 3: 7})
+]
+
+# tree, expected_player_cells, expected_growing_seeding_cost
+PLACE_TREE_OPPONENT = [
+    (Tree(cell_index=4, size=0, is_mine=False, is_dormant=False), [4], {0: 1, 1: 1, 2: 3, 3: 7}),
+    (Tree(cell_index=9, size=3, is_mine=False, is_dormant=False), [9], {0: 0, 1: 1, 2: 3, 3: 8}),
+    (Tree(cell_index=34, size=1, is_mine=False, is_dormant=False), [34], {0: 0, 1: 2, 2: 3, 3: 7})
+]

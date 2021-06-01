@@ -110,6 +110,10 @@ class Cell:
             self.__tree = tree
             self.radius = tree.size
             self.possible_actions = self.get_possible_actions()
+        else:
+            self.__tree = tree
+            self.radius = -1
+            self.possible_actions = self.get_possible_actions()
 
     def get_possible_actions(self):
         possible_actions = [Action(ActionType.WAIT)]
@@ -153,7 +157,10 @@ class Board:
     def __init__(self, radius):
         self.board = {}
         self.radius = radius
-        self.create_board()
+        self.player_growing_seeding_cost = {0: 0, 1: 1, 2: 3, 3: 7}
+        self.opponent_growing_seeding_cost = {0: 0, 1: 1, 2: 3, 3: 7}
+        self.opponent_cells = []
+        self.player_cells = []
 
     def get_move_coordinates(self, origin_cell_coor):
         move_coordinates = [origin_cell_coor]
@@ -176,5 +183,43 @@ class Board:
                     return True
         return False
 
-    def create_board(self):
+    def create_board(self, cells_amount):
+        for i in cells_amount:
+            self.board[i] = None
+
+    def add_cell(self, cell):
+        self.board[cell.cell_index] = cell
+
+    def place_tree(self, tree):
+        self.board[tree.cell_index].tree = tree
+        if tree.is_mine:
+            self.player_cells.append(tree.cell_index)
+            self.player_growing_seeding_cost[tree.size] = self.player_growing_seeding_cost[tree.size] + 1
+        else:
+            self.opponent_cells.append(tree.cell_index)
+            self.opponent_growing_seeding_cost[tree.size] += 1
+
+    def complete_tree(self, index):
+        tree = self.board[index].tree
+        if tree.is_mine:
+            del self.player_cells[index]
+            self.player_growing_seeding_cost[tree.size] -= 1
+        else:
+            del self.opponent_cells[index]
+            self.opponent_growing_seeding_cost[tree.size] -= 1
+        self.board[index].tree = None
+
+
+class Game:
+    RADIUS = 3
+    DAYS_TO_PLAY = 24
+
+    def __init__(self):
+        self.board = Board(radius=self.RADIUS)
+
+    def evaluate_board(self, opponent=False):
         pass
+
+    def minimax(self, state, depth, maximizingPlayer):
+        pass
+

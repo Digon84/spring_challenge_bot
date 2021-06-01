@@ -1,6 +1,7 @@
 import pytest
 from hex import Cell, Board, Coor, Tree
-from hex_test_data import POSSIBLE_MOVE_CANDITATES_TEST_DATA, POSSIBLE_ACTIONS_TEST_DATA, FIND_SHADOW_TEST_DATA
+from hex_test_data import POSSIBLE_MOVE_CANDITATES_TEST_DATA, POSSIBLE_ACTIONS_TEST_DATA, FIND_SHADOW_TEST_DATA,\
+    PLACE_TREE_PLAYER, PLACE_TREE_OPPONENT
 
 
 @pytest.mark.parametrize("radius, start_cell, expected_result", POSSIBLE_MOVE_CANDITATES_TEST_DATA)
@@ -23,6 +24,27 @@ def test_possible_actions(board_radius, cell_index, cell_coordinates, cell_richn
 
 @pytest.mark.parametrize("cell_to_check, sun_direction, expected_result", FIND_SHADOW_TEST_DATA)
 def test_check_if_cell_shadowed(cell_to_check, sun_direction, expected_result):
+    board = create_board()
+    assert board.is_cell_shadowed(cell_to_check=cell_to_check, sun_direction=sun_direction) == expected_result
+
+
+@pytest.mark.parametrize("tree, expected_player_cells, expected_growing_seeding_cost", PLACE_TREE_PLAYER)
+def test_place_tree_player(tree, expected_player_cells, expected_growing_seeding_cost):
+    board = create_board()
+    board.place_tree(tree)
+    assert board.player_cells == expected_player_cells
+    assert board.player_growing_seeding_cost == expected_growing_seeding_cost
+
+
+@pytest.mark.parametrize("tree, expected_opponents_cells, expected_opponent_growing_seeding_cost", PLACE_TREE_OPPONENT)
+def test_place_tree_opponent(tree, expected_opponents_cells, expected_opponent_growing_seeding_cost):
+    board = create_board()
+    board.place_tree(tree)
+    assert board.opponent_cells == expected_opponents_cells
+    assert board.opponent_growing_seeding_cost == expected_opponent_growing_seeding_cost
+
+
+def create_board():
     board = Board(radius=3)
     board.board[0] = Cell(cell_index=0, coor=Coor(0, 0, 0), richness=0, neighbors=[], possible_moves=[],
                           tree=Tree(cell_index=0, size=2, is_mine=True, is_dormant=True))
@@ -38,5 +60,4 @@ def test_check_if_cell_shadowed(cell_to_check, sun_direction, expected_result):
                            tree=Tree(cell_index=34, size=1, is_mine=True, is_dormant=True))
     board.board[36] = Cell(cell_index=36, coor=Coor(2, -3, 1), richness=0, neighbors=[], possible_moves=[],
                            tree=Tree(cell_index=36, size=1, is_mine=True, is_dormant=True))
-
-    assert board.is_cell_shadowed(cell_to_check=cell_to_check, sun_direction=sun_direction) == expected_result
+    return board
